@@ -1,0 +1,60 @@
+{
+  "name": "tiny-popup-menu",
+  "version": "1.0.0-beta",
+  "description": "Tiny Popup menu",
+  "main": "dist/tiny-popup-menu.js",
+  "module": "lib/tiny-popup-menu.js",
+  "types": "lib/tiny-popup-menu.d.ts",
+  "style": "lib/tiny-popup-menu.css",
+  "type": "module",
+  "files": [
+    "lib/**/*",
+    "dist/**/*"
+  ],
+  "scripts": {
+    "watch": "rollup -w --config rollup.config.dist.js --dev",
+    "format": "eslint --fix src && prettier --write src",
+    "lint": "eslint src && prettier --check src",
+    "build": "npm run lint && rollup --config rollup.config.dist.js && rollup --config rollup.config.js"
+  },
+  "keywords": [
+    "menu",
+    "popup"
+  ],
+  "author": "Gastón Zalba",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GastonZalba/tiny-popup-menu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GastonZalba/tiny-popup-menu/issues"
+  },
+  "homepage": "https://github.com/GastonZalba/tiny-popup-menu#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-terser": "^0.4.1",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.2.1",
+    "rollup": "^3.20.7",
+    "rollup-plugin-banner2": "^1.2.2",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^2.0.2",
+    "rollup-plugin-svg-import": "^2.0.0",
+    "sass": "^1.48.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "tiny-emitter": "^2.1.0"
+  }
+}

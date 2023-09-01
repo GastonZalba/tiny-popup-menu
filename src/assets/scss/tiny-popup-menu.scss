@@ -1,0 +1,96 @@
+@import 'variables';
+
+.popup-menu {
+    width: max-content;
+    right: 0;
+    padding: 0;
+    --ofx: 5px;
+
+    .popup-menu--container {
+        background: $background;
+        border-radius: $borderRadius;
+        border: $border;
+        box-shadow: $boxShadow;
+        position: relative;
+        z-index: 998;
+        padding: 10px 0;
+        color: #616161;
+        font-size: 13px;
+        letter-spacing: 0;
+        text-transform: none;
+        text-align: center;
+
+        .popup-menu--item {
+            cursor: pointer;
+            font-weight: 100;
+            padding: 6px 16px;
+
+            &:hover {
+                background: $backgroundHover;
+            }
+        }
+        .popup-menu--item-separator {
+            width: 100%;
+            height: 1px;
+            display: block;
+            margin: 6px 0;
+            background-color: $separatorColor;
+        }
+    }
+
+    &.popup-menu--show-arrow {
+        &:after {
+            content: '';
+            z-index: 997;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        &:before {
+            content: '';
+            z-index: 999;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        &.popup-menu--show-arrow-top {
+            &:after {
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid $borderColor;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                left: calc(50% - var(--ofx) - 2px);
+                top: -18px;
+            }
+            &:before {
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid $background;
+                border-right: 8px solid transparent;
+                border-left: 8px solid transparent;
+                left: calc(50% - var(--ofx));
+                top: -15px;
+            }
+        }
+
+        &.popup-menu--show-arrow-bottom {
+            &:after {
+                border-top: 10px solid $borderColor;
+                border-bottom: 10px solid transparent;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                left: calc(50% - var(--ofx) - 2px);
+                bottom: -18px;
+            }
+            &:before {
+                border-top: 8px solid $background;
+                border-bottom: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-left: 8px solid transparent;
+                left: calc(50% - var(--ofx));
+                bottom: -15px;
+            }
+        }
+    }
+}

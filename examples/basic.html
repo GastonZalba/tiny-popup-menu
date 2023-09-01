@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+  <meta charset="UTF-8">
+  <title>Tiny Popup Menu</title>
+    <link rel="stylesheet" href="./reset.css" />
+    <link rel="stylesheet" href="./basic.css" />
+  <link rel="stylesheet" href="../dist/css/tiny-popup-menu.css" />
+
+  <style>
+    body, html {
+        height: 100%;
+        background: #ababab;
+    }
+    #testButtons {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .containerButtons{
+        display: flex;
+        justify-content: space-between;
+    }
+    #testButtonsMiddle,
+    #testButtonsBottom {
+        margin-top: auto; 
+    }
+    button {
+        cursor: pointer;
+        margin: 20px;
+        padding: 10px 20px;
+    }
+    .disabled {
+        pointer-events: none;
+        opacity: 0.7;
+        font-style: italic;
+    }
+    .delete {
+        color: rgb(209, 46, 46);
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="testButtons">
+    <div id="testButtonsTop" class="containerButtons"></div>
+    <div id="testButtonsMiddle" class="containerButtons"></div>  
+    <div id="testButtonsBottom" class="containerButtons"></div>  
+  </div>  
+  <script src="../dist/tiny-popup-menu.js"></script>
+  <script src="./basic.js"></script>
+</body>
+
+</html>

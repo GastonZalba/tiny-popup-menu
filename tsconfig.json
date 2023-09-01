@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "allowJs": true,
+    "baseUrl": "./",
+    "target": "ES2017",
+    "jsx": "react",
+    "jsxFactory": "myPragma",
+    "jsxFragmentFactory": "null",
+    "outDir": "./tmp-dist",
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "incremental": true
+  },
+  "include": [
+    "./src"
+  ]
+}
