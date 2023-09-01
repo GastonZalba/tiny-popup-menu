@@ -1,9 +1,20 @@
-# Tiny Popup Menu (beta)
+# Tiny Popup Menu
+<p align="center">
+    <a href="https://www.npmjs.com/package/tiny-popup-menu">
+        <img src="https://img.shields.io/npm/v/tiny-popup-menu.svg" alt="npm version">
+    </a>
+    <a href="https://img.shields.io/npm/dm/tiny-popup-menu">
+        <img alt="npm" src="https://img.shields.io/npm/dm/tiny-popup-menu">
+    </a>
+    <a href="https://github.com/gastonzalba/tiny-popup-menu/blob/master/LICENSE">
+        <img src="https://img.shields.io/npm/l/tiny-popup-menu.svg" alt="license">
+    </a>
+</p>
 
 Tiny vanilla javascript library to display popup menus next to button togglers.
 
 ## Example
-See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.1-beta/examples/basic.html).
+See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.0/examples/basic.html).
 
 ## Usage
 ### Creating an instance

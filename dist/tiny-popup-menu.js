@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.0-beta
+ * tiny-popup-menu - v1.0.0
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Thu Aug 31 2023 21:14:38 GMT-0300 (Argentina Standard Time)
+ * Built: Fri Sep 01 2023 10:39:40 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
