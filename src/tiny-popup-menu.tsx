@@ -75,8 +75,10 @@ export default class TinyPopupMenu extends TinyEmitter {
 
             // if the same button is clicked, do not reopen
             if (options.event.currentTarget === this._toggler) {
-                options.event.preventDefault();
-                options.event.stopPropagation();
+                if (options.stopClick) {
+                    options.event.preventDefault();
+                    options.event.stopPropagation();
+                }
                 return;
             }
         }
@@ -119,8 +121,10 @@ export default class TinyPopupMenu extends TinyEmitter {
 
         this.emit('open');
 
-        event.preventDefault();
-        event.stopPropagation();
+        if (options.stopClick) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
     }
 
     /**
@@ -291,7 +295,8 @@ export default class TinyPopupMenu extends TinyEmitter {
                 x: 0,
                 y: 0
             },
-            menuItems: []
+            menuItems: [],
+            stopClick: true
         };
 
         return deepObjectAssign(
@@ -399,6 +404,11 @@ export interface Options {
           }
         | '-'
     >;
+
+    /**
+     * Prevent event propagation
+     */
+    stopClick?: boolean;
 }
 
 export interface OpenOptions extends Options {
