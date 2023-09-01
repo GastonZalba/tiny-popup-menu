@@ -69,13 +69,15 @@ export default class TinyPopupMenu extends TinyEmitter {
      * @returns
      */
     open(options: OpenOptions): void {
+        this._options = this._parseOptions(options) as OpenOptions;
+
         if (this._isOpen) {
             // clean menu items
             this.close();
 
             // if the same button is clicked, do not reopen
             if (options.event.currentTarget === this._toggler) {
-                if (options.stopClick) {
+                if (this._options.stopClick) {
                     options.event.preventDefault();
                     options.event.stopPropagation();
                 }
@@ -83,9 +85,7 @@ export default class TinyPopupMenu extends TinyEmitter {
             }
         }
 
-        this._options = this._parseOptions(options) as OpenOptions;
-
-        const { event, menuItems, autoClose } = this._options;
+        const { event, menuItems, autoClose, stopClick } = this._options;
 
         this._toggler = event.currentTarget as HTMLElement;
 
@@ -117,11 +117,14 @@ export default class TinyPopupMenu extends TinyEmitter {
 
         this.updatePosition();
 
-        this.addEventListeners();
+        // delay to prevent click be fired inmediatly if `stopClick` is false
+        setTimeout(() => {
+            this.addEventListeners();
+        });
 
         this.emit('open');
 
-        if (options.stopClick) {
+        if (stopClick) {
             event.preventDefault();
             event.stopPropagation();
         }
