@@ -1,7 +1,7 @@
-$boxShadow: 0 1px 14px rgba(0, 0, 0, 0.2) !default;
-$background: #ffffff !default;
-$backgroundHover: darken($background, 6) !default;
-$borderRadius: 6px !default;
-$borderColor: #c5c5c5 !default;
-$border: 1px solid $borderColor !default;
-$separatorColor: lighten(#c5c5c5, 6) !default;
+$tpm-boxShadow: 0 1px 14px rgba(0, 0, 0, 0.2) !default;
+$tpm-background: #ffffff !default;
+$tpm-backgroundHover: darken($tpm-background, 6) !default;
+$tpm-borderRadius: 6px !default;
+$tpm-borderColor: #c5c5c5 !default;
+$tpm-border: 1px solid $tpm-borderColor !default;
+$tpm-separatorColor: lighten(#c5c5c5, 6) !default;

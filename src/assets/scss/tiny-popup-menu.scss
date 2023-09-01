@@ -7,10 +7,10 @@
     --ofx: 5px;
 
     .popup-menu--container {
-        background: $background;
-        border-radius: $borderRadius;
-        border: $border;
-        box-shadow: $boxShadow;
+        background: $tpm-background;
+        border-radius: $tpm-borderRadius;
+        border: $tpm-border;
+        box-shadow: $tpm-boxShadow;
         position: relative;
         z-index: 998;
         padding: 10px 0;
@@ -26,7 +26,7 @@
             padding: 6px 16px;
 
             &:hover {
-                background: $backgroundHover;
+                background: $tpm-backgroundHover;
             }
         }
         .popup-menu--item-separator {
@@ -34,7 +34,7 @@
             height: 1px;
             display: block;
             margin: 6px 0;
-            background-color: $separatorColor;
+            background-color: $tpm-separatorColor;
         }
     }
 
@@ -58,7 +58,7 @@
         &.popup-menu--show-arrow-top {
             &:after {
                 border-top: 10px solid transparent;
-                border-bottom: 10px solid $borderColor;
+                border-bottom: 10px solid $tpm-borderColor;
                 border-right: 10px solid transparent;
                 border-left: 10px solid transparent;
                 left: calc(50% - var(--ofx) - 2px);
@@ -66,7 +66,7 @@
             }
             &:before {
                 border-top: 8px solid transparent;
-                border-bottom: 8px solid $background;
+                border-bottom: 8px solid $tpm-background;
                 border-right: 8px solid transparent;
                 border-left: 8px solid transparent;
                 left: calc(50% - var(--ofx));
@@ -76,7 +76,7 @@
 
         &.popup-menu--show-arrow-bottom {
             &:after {
-                border-top: 10px solid $borderColor;
+                border-top: 10px solid $tpm-borderColor;
                 border-bottom: 10px solid transparent;
                 border-right: 10px solid transparent;
                 border-left: 10px solid transparent;
@@ -84,7 +84,7 @@
                 bottom: -18px;
             }
             &:before {
-                border-top: 8px solid $background;
+                border-top: 8px solid $tpm-background;
                 border-bottom: 8px solid transparent;
                 border-right: 8px solid transparent;
                 border-left: 8px solid transparent;
