@@ -3,7 +3,7 @@
 Tiny vanilla javascript library to display popup menus next to button togglers.
 
 ## Example
-See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/main/examples/basic.html).
+See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.0-beta/examples/basic.html).
 
 ## Usage
 ### Creating an instance
