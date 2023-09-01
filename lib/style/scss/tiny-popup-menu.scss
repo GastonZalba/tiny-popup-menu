@@ -5,6 +5,8 @@
     right: 0;
     padding: 0;
     --ofx: 5px;
+    z-index: 999;
+    font-family: sans-serif;
 
     .popup-menu--container {
         background: $tpm-background;

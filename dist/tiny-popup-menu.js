@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.0
+ * tiny-popup-menu - v1.0.2
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Fri Sep 01 2023 12:08:18 GMT-0300 (Argentina Standard Time)
+ * Built: Fri Sep 01 2023 12:21:22 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -167,20 +167,20 @@
        * @returns
        */
       open(options) {
+          this._options = this._parseOptions(options);
           if (this._isOpen) {
               // clean menu items
               this.close();
               // if the same button is clicked, do not reopen
               if (options.event.currentTarget === this._toggler) {
-                  if (options.stopClick) {
+                  if (this._options.stopClick) {
                       options.event.preventDefault();
                       options.event.stopPropagation();
                   }
                   return;
               }
           }
-          this._options = this._parseOptions(options);
-          const { event, menuItems, autoClose } = this._options;
+          const { event, menuItems, autoClose, stopClick } = this._options;
           this._toggler = event.currentTarget;
           this._menuItemsList = menuItems.map((item) => {
               if (item === '-') {
@@ -198,9 +198,12 @@
           });
           this._isOpen = true;
           this.updatePosition();
-          this.addEventListeners();
+          // delay to prevent click be fired inmediatly if `stopClick` is false
+          setTimeout(() => {
+              this.addEventListeners();
+          });
           this.emit('open');
-          if (options.stopClick) {
+          if (stopClick) {
               event.preventDefault();
               event.stopPropagation();
           }
