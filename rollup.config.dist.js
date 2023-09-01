@@ -67,7 +67,7 @@ export default function (commandOptions) {
                 inject: commandOptions.dev,
                 minimize: !commandOptions.dev,
                 extract: !commandOptions.dev
-                    ? path.resolve('dist/css/ol-mapping-tools.css')
+                    ? path.resolve('dist/css/tiny-popup-menu.css')
                     : false
             }),
             commandOptions.dev &&
