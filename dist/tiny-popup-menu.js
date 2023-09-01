@@ -1,7 +1,7 @@
 /*!
  * tiny-popup-menu - v1.0.0
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Fri Sep 01 2023 10:39:40 GMT-0300 (Argentina Standard Time)
+ * Built: Fri Sep 01 2023 12:08:18 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -172,8 +172,10 @@
               this.close();
               // if the same button is clicked, do not reopen
               if (options.event.currentTarget === this._toggler) {
-                  options.event.preventDefault();
-                  options.event.stopPropagation();
+                  if (options.stopClick) {
+                      options.event.preventDefault();
+                      options.event.stopPropagation();
+                  }
                   return;
               }
           }
@@ -198,8 +200,10 @@
           this.updatePosition();
           this.addEventListeners();
           this.emit('open');
-          event.preventDefault();
-          event.stopPropagation();
+          if (options.stopClick) {
+              event.preventDefault();
+              event.stopPropagation();
+          }
       }
       /**
        * @fires close
@@ -332,7 +336,8 @@
                   x: 0,
                   y: 0
               },
-              menuItems: []
+              menuItems: [],
+              stopClick: true
           };
           return deepObjectAssign({}, defaultOptions, this._instanceOptions || {}, options || {});
       }

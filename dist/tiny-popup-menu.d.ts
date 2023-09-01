@@ -106,4 +106,3 @@ export interface Options {
 export interface OpenOptions extends Options {
     event: MouseEvent;
 }
-//# sourceMappingURL=tiny-popup-menu.d.ts.map
