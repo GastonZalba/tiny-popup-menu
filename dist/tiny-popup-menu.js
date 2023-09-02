@@ -1,7 +1,7 @@
 /*!
  * tiny-popup-menu - v1.0.2
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Fri Sep 01 2023 12:21:22 GMT-0300 (Argentina Standard Time)
+ * Built: Sat Sep 02 2023 17:22:27 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -157,7 +157,7 @@
           super();
           this._isOpen = false;
           this._containerMenu = createElement("div", { id: `${ID}-${instances}` });
-          this._instanceOptions = this._parseOptions(options);
+          this._instanceOptions = options;
           instances++;
       }
       /**
@@ -230,7 +230,7 @@
            */
           const evaluatePosition = () => {
               if (position === "top" /* Position.Top */) {
-                  if (togglerPosition.top + menuHeight + offsetTop + margin <=
+                  if (togglerPosition.top - menuHeight - offsetTop - margin <=
                       0) {
                       return "bottom" /* Position.Bottom */;
                   }
@@ -241,7 +241,7 @@
                       offsetTop +
                       togglerHeight +
                       margin >=
-                      document.documentElement.scrollHeight) {
+                      document.documentElement.offsetHeight) {
                       return "top" /* Position.Top */;
                   }
               }
@@ -267,7 +267,7 @@
           // Button height + menu height
           const menuHeight = this._containerMenu.offsetHeight;
           const menuWidth = this._containerMenu.offsetWidth;
-          // If menu is near bottom, show upright
+          // If menu is near a window limit, invert the direction
           const finalPosition = evaluatePosition();
           let compensateMenuHeight = 0;
           let compensateMenuWidthToCenter = 0;
@@ -297,8 +297,17 @@
               togglerPosition.top + compensateMenuHeight + 'px';
           this._toggler.classList.add(CLASS_OPEN);
           if (arrow) {
+              const arrowWidth = 5;
+              const extraMargin = 3;
+              if (adjustX > 0) {
+                  // Prevent the arrow go outside the menu width
+                  adjustX = Math.min(menuWidth / 2 - arrowWidth - extraMargin, adjustX);
+              }
+              else {
+                  adjustX = Math.max(-(menuWidth / 2 - (arrowWidth + extraMargin) * 2), adjustX);
+              }
               // displace X css arrow
-              this._containerMenu.style.setProperty('--ofx', `${adjustX + 5}px`);
+              this._containerMenu.style.setProperty('--ofx', `${adjustX + arrowWidth}px`);
               this._evaluateArrowPosition(finalPosition);
           }
           if (!silent) {
@@ -332,9 +341,7 @@
               className: '',
               autoClose: true,
               arrow: true,
-              margin: ('arrow' in (options || {}) ? options.arrow : true)
-                  ? 10
-                  : 2,
+              margin: undefined,
               offset: {
                   x: 0,
                   y: 0
@@ -342,7 +349,14 @@
               menuItems: [],
               stopClick: true
           };
-          return deepObjectAssign({}, defaultOptions, this._instanceOptions || {}, options || {});
+          const mergedOptions = deepObjectAssign({}, defaultOptions, this._instanceOptions || {}, options || {});
+          // if margin is not setled, add a default ones
+          if (mergedOptions.margin === undefined) {
+              mergedOptions.margin = ('arrow' in mergedOptions ? mergedOptions.arrow : true)
+                  ? 10
+                  : 2;
+          }
+          return mergedOptions;
       }
       _evaluateArrowPosition(position) {
           let arrowPositionClass = '';
@@ -368,12 +382,20 @@
                   this.updatePosition(false);
               }
           };
+          this._scrollListener = (evt) => {
+              if (this._isOpen &&
+                  evt.target.contains(this._toggler)) {
+                  this.updatePosition(false);
+              }
+          };
           document.addEventListener('click', this._closeListener);
           window.addEventListener('resize', this._resizeListener);
+          window.addEventListener('scroll', this._scrollListener, true);
       }
       removeEventListeners() {
           document.removeEventListener('click', this._closeListener);
           window.removeEventListener('resize', this._resizeListener);
+          window.removeEventListener('scroll', this._scrollListener);
       }
   }
 
