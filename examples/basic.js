@@ -14,11 +14,11 @@
         autoclose: true,
         menuItems: [
             {
-                content: 'Display alert 😎',
+                content: 'Click to display alert 😎',
                 callback: () => alert('Alert')
             },
             {
-                content: 'Display another alert',
+                content: 'Click to display another alert',
                 callback: () => alert('Another alert')
             },
             '-',
@@ -39,8 +39,8 @@
 
     var buttonsTop = document.getElementById('testButtonsTop');
     buttonsTop.append(
-        createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
-        createTestBtn('Click (custom elements)', (event) =>
+        createTestBtn('Click', (event) => tinyPopupMenu.open({position: 'top', event })),
+        createTestBtn('Show custom elements in same instance', (event) =>
             tinyPopupMenu.open({
                 event,
                 menuItems: [
@@ -58,14 +58,16 @@
     );
 
     var buttonsMiddle = document.getElementById('testButtonsMiddle');
+    var btnInit =   createTestBtn(
+        'Click (position at top)',
+        (event) => tinyPopupMenu.open({ position: 'top', event }),
+    );
+    
     buttonsMiddle.append(
         createTestBtn('Click (no arrow)', (event) =>
             tinyPopupMenu.open({ arrow: false, event })
         ),
-        createTestBtn(
-            'Click (force at top)',
-            (event) => tinyPopupMenu.open({ position: 'top', event }),
-        ),
+        btnInit,
         createTestBtn('Use right click', (event) =>
             tinyPopupMenu.open({ position: 'bottom', event }),
             'contextmenu'
@@ -75,10 +77,12 @@
         )
     );
 
-    var buttonsBottom = document.getElementById('testButtonsBottom');
+    var buttonsBottom = document.querySelector('#testButtonsBottom .containerButtons');
     buttonsBottom.append(
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event }))
     );
+
+    btnInit.click()
 })();

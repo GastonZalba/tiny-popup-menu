@@ -54,11 +54,12 @@ export default class TinyPopupMenu extends TinyEmitter {
 
     private _closeListener: (evt: CustomEvent) => void;
     private _resizeListener: (evt: CustomEvent) => void;
+    private _scrollListener: (evt: CustomEvent) => void;
 
     constructor(options: Options = null) {
         super();
         this._containerMenu = <div id={`${ID}-${instances}`}></div>;
-        this._instanceOptions = this._parseOptions(options);
+        this._instanceOptions = options;
         instances++;
     }
 
@@ -155,7 +156,7 @@ export default class TinyPopupMenu extends TinyEmitter {
         const evaluatePosition = (): Position => {
             if (position === Position.Top) {
                 if (
-                    togglerPosition.top + menuHeight + offsetTop + margin <=
+                    togglerPosition.top - menuHeight - offsetTop - margin <=
                     0
                 ) {
                     return Position.Bottom;
@@ -167,7 +168,7 @@ export default class TinyPopupMenu extends TinyEmitter {
                         offsetTop +
                         togglerHeight +
                         margin >=
-                    document.documentElement.scrollHeight
+                    document.documentElement.offsetHeight
                 ) {
                     return Position.Top;
                 }
@@ -207,7 +208,7 @@ export default class TinyPopupMenu extends TinyEmitter {
         const menuHeight = this._containerMenu.offsetHeight;
         const menuWidth = this._containerMenu.offsetWidth;
 
-        // If menu is near bottom, show upright
+        // If menu is near a window limit, invert the direction
         const finalPosition = evaluatePosition();
 
         let compensateMenuHeight = 0;
@@ -246,8 +247,26 @@ export default class TinyPopupMenu extends TinyEmitter {
         this._toggler.classList.add(CLASS_OPEN);
 
         if (arrow) {
+            const arrowWidth = 5;
+            const extraMargin = 3;
+            if (adjustX > 0) {
+                // Prevent the arrow go outside the menu width
+                adjustX = Math.min(
+                    menuWidth / 2 - arrowWidth - extraMargin,
+                    adjustX
+                );
+            } else {
+                adjustX = Math.max(
+                    -(menuWidth / 2 - (arrowWidth + extraMargin) * 2),
+                    adjustX
+                );
+            }
+
             // displace X css arrow
-            this._containerMenu.style.setProperty('--ofx', `${adjustX + 5}px`);
+            this._containerMenu.style.setProperty(
+                '--ofx',
+                `${adjustX + arrowWidth}px`
+            );
             this._evaluateArrowPosition(finalPosition);
         }
 
@@ -291,9 +310,7 @@ export default class TinyPopupMenu extends TinyEmitter {
             className: '',
             autoClose: true,
             arrow: true,
-            margin: ('arrow' in (options || {}) ? options.arrow : true)
-                ? 10
-                : 2,
+            margin: undefined, // autocalculate later
             offset: {
                 x: 0,
                 y: 0
@@ -302,12 +319,23 @@ export default class TinyPopupMenu extends TinyEmitter {
             stopClick: true
         };
 
-        return deepObjectAssign(
+        const mergedOptions = deepObjectAssign(
             {},
             defaultOptions,
             this._instanceOptions || {},
             options || {}
         );
+
+        // if margin is not setled, add a default ones
+        if (mergedOptions.margin === undefined) {
+            mergedOptions.margin = (
+                'arrow' in mergedOptions ? mergedOptions.arrow : true
+            )
+                ? 10
+                : 2;
+        }
+
+        return mergedOptions;
     }
 
     protected _evaluateArrowPosition(position: Position) {
@@ -339,13 +367,24 @@ export default class TinyPopupMenu extends TinyEmitter {
             }
         };
 
+        this._scrollListener = (evt) => {
+            if (
+                this._isOpen &&
+                (evt.target as HTMLElement).contains(this._toggler)
+            ) {
+                this.updatePosition(false);
+            }
+        };
+
         document.addEventListener('click', this._closeListener);
         window.addEventListener('resize', this._resizeListener);
+        window.addEventListener('scroll', this._scrollListener, true);
     }
 
     protected removeEventListeners(): void {
         document.removeEventListener('click', this._closeListener);
         window.removeEventListener('resize', this._resizeListener);
+        window.removeEventListener('scroll', this._scrollListener);
     }
 }
 

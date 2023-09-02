@@ -59,7 +59,6 @@ tinyPopupMenu.on('updateposition', () => console.log('Update position event'));
 ## TODO
 - Improve README
 - Add hoverable submenu
-- Add example using a scrollable div
 - Themes
 ## License
 
