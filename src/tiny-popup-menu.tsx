@@ -212,18 +212,17 @@ export default class TinyPopupMenu extends TinyEmitter {
         const finalPosition = evaluatePosition();
 
         let compensateMenuHeight = 0;
-        let compensateMenuWidthToCenter = 0;
 
         switch (finalPosition) {
             case Position.Bottom:
                 compensateMenuHeight = offsetTop + togglerHeight + margin;
-                compensateMenuWidthToCenter = -menuWidth / 2 + togglerWidth / 2;
                 break;
             case Position.Top:
                 compensateMenuHeight = -menuHeight - margin;
-                compensateMenuWidthToCenter = -menuWidth / 2 + togglerWidth / 2;
                 break;
         }
+
+        const compensateMenuWidthToCenter = -menuWidth / 2 + togglerWidth / 2;
 
         const windowWidth = window.innerWidth;
 
@@ -247,7 +246,7 @@ export default class TinyPopupMenu extends TinyEmitter {
         this._toggler.classList.add(CLASS_OPEN);
 
         if (arrow) {
-            const arrowWidth = 5;
+            const arrowWidth = 8;
             const extraMargin = 3;
             if (adjustX > 0) {
                 // Prevent the arrow go outside the menu width
