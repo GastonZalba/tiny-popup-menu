@@ -2,8 +2,8 @@
   width: max-content;
   right: 0;
   padding: 0;
-  --ofx: 5px;
-  z-index: 999;
+  --ofx: $tmp-arrowWidth;
+  z-index: 9999;
   font-family: sans-serif;
 }
 .popup-menu .popup-menu--container {
@@ -12,7 +12,7 @@
   border: 1px solid #c5c5c5;
   box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);
   position: relative;
-  z-index: 998;
+  z-index: 9998;
   padding: 10px 0;
   color: #616161;
   font-size: 13px;
@@ -44,7 +44,7 @@
 }
 .popup-menu.popup-menu--show-arrow:before {
   content: "";
-  z-index: 999;
+  z-index: 9999;
   width: 0;
   height: 0;
   position: absolute;
@@ -55,7 +55,7 @@
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
   left: calc(50% - var(--ofx) - 2px);
-  top: -18px;
+  top: -14px;
 }
 .popup-menu.popup-menu--show-arrow.popup-menu--show-arrow-top:before {
   border-top: 8px solid transparent;
@@ -63,7 +63,7 @@
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
   left: calc(50% - var(--ofx));
-  top: -15px;
+  top: -14px;
 }
 .popup-menu.popup-menu--show-arrow.popup-menu--show-arrow-bottom:after {
   border-top: 10px solid #c5c5c5;
@@ -71,7 +71,7 @@
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
   left: calc(50% - var(--ofx) - 2px);
-  bottom: -18px;
+  bottom: -14px;
 }
 .popup-menu.popup-menu--show-arrow.popup-menu--show-arrow-bottom:before {
   border-top: 8px solid #ffffff;
@@ -79,5 +79,5 @@
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
   left: calc(50% - var(--ofx));
-  bottom: -15px;
+  bottom: -14px;
 }

@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.2
+ * tiny-popup-menu - v1.0.4
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Sat Sep 02 2023 17:22:27 GMT-0300 (Argentina Standard Time)
+ * Built: Mon Sep 04 2023 10:59:32 GMT-0300 (hora estándar de Argentina)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -270,17 +270,15 @@
           // If menu is near a window limit, invert the direction
           const finalPosition = evaluatePosition();
           let compensateMenuHeight = 0;
-          let compensateMenuWidthToCenter = 0;
           switch (finalPosition) {
               case "bottom" /* Position.Bottom */:
                   compensateMenuHeight = offsetTop + togglerHeight + margin;
-                  compensateMenuWidthToCenter = -menuWidth / 2 + togglerWidth / 2;
                   break;
               case "top" /* Position.Top */:
                   compensateMenuHeight = -menuHeight - margin;
-                  compensateMenuWidthToCenter = -menuWidth / 2 + togglerWidth / 2;
                   break;
           }
+          const compensateMenuWidthToCenter = -menuWidth / 2 + togglerWidth / 2;
           const windowWidth = window.innerWidth;
           const calcualteLeft = togglerPosition.left + offsetLeft + compensateMenuWidthToCenter;
           let adjustX = 0;
@@ -297,7 +295,7 @@
               togglerPosition.top + compensateMenuHeight + 'px';
           this._toggler.classList.add(CLASS_OPEN);
           if (arrow) {
-              const arrowWidth = 5;
+              const arrowWidth = 8;
               const extraMargin = 3;
               if (adjustX > 0) {
                   // Prevent the arrow go outside the menu width
