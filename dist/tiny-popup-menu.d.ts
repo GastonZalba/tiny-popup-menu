@@ -136,4 +136,3 @@ export interface Options {
         callback?: (evt: MouseEvent) => void;
     } | '-'>;
 }
-//# sourceMappingURL=tiny-popup-menu.d.ts.map

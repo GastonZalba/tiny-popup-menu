@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.4
+ * tiny-popup-menu - v1.0.5
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Mon Sep 04 2023 10:59:32 GMT-0300 (hora estándar de Argentina)
+ * Built: Wed Sep 06 2023 13:00:21 GMT-0300 (hora estándar de Argentina)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -123,6 +123,7 @@
   const CLASS_SHOW_ARROW_BOTTOM = ID + '--show-arrow-bottom';
   const CLASS_ITEM = ID + '--item';
   const CLASS_ITEM_SEPARATOR = ID + '--item-separator';
+  // Count the running instances to add a unique id at each one
   let instances = 1;
   /**
    *
@@ -148,9 +149,16 @@
       return target;
   };
   /**
+   * Tiny vanilla javascript library to display popup menus next to button togglers.
+   *
+   * The popup menu uses a fixed position calculated by javascript, allowing the toggler to be inside of scrollables elements, auto adjust margins, evaluate the position (to be on top or at the bottom of the toggler), etc.
+   *
+   * If you want only one menu open at a time, use one instance. Instead if you want multiples menus opened at the same time, create multiples instances.
+   *
    * @fires open
    * @fires close
    * @fires updateposition
+   * @extends TinyEmitter
    */
   class TinyPopupMenu extends TinyEmitter {
       constructor(options = null) {
@@ -168,7 +176,7 @@
        */
       open(options) {
           this._options = this._parseOptions(options);
-          if (this._isOpen) {
+          if (this.isOpen()) {
               // clean menu items
               this.close();
               // if the same button is clicked, do not reopen
@@ -209,19 +217,23 @@
           }
       }
       /**
-       * @fires close
        * Close menu
+       *
+       * @fires close
        */
       close() {
+          if (!this.isOpen())
+              return;
           this._containerMenu.innerHTML = '';
           this._containerMenu.remove();
           this._toggler.classList.remove(CLASS_OPEN);
-          this._isOpen = false;
           this.removeEventListeners();
+          this._isOpen = false;
           this.emit('close');
       }
       /**
        * Update the position of an opened menu
+       *
        * @fires updateposition
        */
       updatePosition(silent = true) {
@@ -229,25 +241,25 @@
            * Check if the default position is ok or needs to be inverted
            */
           const evaluatePosition = () => {
-              if (position === "top" /* Position.Top */) {
+              if (position === Position.Top) {
                   if (togglerPosition.top - menuHeight - offsetTop - margin <=
                       0) {
-                      return "bottom" /* Position.Bottom */;
+                      return Position.Bottom;
                   }
               }
-              else if (position === "bottom" /* Position.Bottom */) {
+              else if (position === Position.Bottom) {
                   if (togglerPosition.top +
                       menuHeight +
                       offsetTop +
                       togglerHeight +
                       margin >=
                       document.documentElement.offsetHeight) {
-                      return "top" /* Position.Top */;
+                      return Position.Top;
                   }
               }
               return position;
           };
-          if (!this._isOpen)
+          if (!this.isOpen())
               return;
           const { offset, className, arrow, position, margin } = this._options;
           this._containerMenu.style.position = 'fixed';
@@ -271,10 +283,10 @@
           const finalPosition = evaluatePosition();
           let compensateMenuHeight = 0;
           switch (finalPosition) {
-              case "bottom" /* Position.Bottom */:
+              case Position.Bottom:
                   compensateMenuHeight = offsetTop + togglerHeight + margin;
                   break;
-              case "top" /* Position.Top */:
+              case Position.Top:
                   compensateMenuHeight = -menuHeight - margin;
                   break;
           }
@@ -329,13 +341,21 @@
           }
       }
       /**
+       * Retunrs true if the insatance has an open menu
+       *
+       * @returns
+       */
+      isOpen() {
+          return this._isOpen;
+      }
+      /**
        * Merge default options, instance options, and single open method options
        * @param options
        * @returns
        */
       _parseOptions(options) {
           const defaultOptions = {
-              position: "bottom" /* Position.Bottom */,
+              position: Position.Bottom,
               className: '',
               autoClose: true,
               arrow: true,
@@ -359,10 +379,10 @@
       _evaluateArrowPosition(position) {
           let arrowPositionClass = '';
           switch (position) {
-              case "bottom" /* Position.Bottom */:
+              case Position.Bottom:
                   arrowPositionClass = CLASS_SHOW_ARROW_TOP;
                   break;
-              case "top" /* Position.Top */:
+              case Position.Top:
                   arrowPositionClass = CLASS_SHOW_ARROW_BOTTOM;
                   break;
           }
@@ -376,12 +396,12 @@
               }
           };
           this._resizeListener = () => {
-              if (this._isOpen) {
+              if (this.isOpen()) {
                   this.updatePosition(false);
               }
           };
           this._scrollListener = (evt) => {
-              if (this._isOpen &&
+              if (this.isOpen() &&
                   evt.target.contains(this._toggler)) {
                   this.updatePosition(false);
               }
@@ -396,9 +416,18 @@
           window.removeEventListener('scroll', this._scrollListener);
       }
   }
+  /**
+   * Available menu positions
+   */
+  var Position;
+  (function (Position) {
+      Position["Top"] = "top";
+      Position["Bottom"] = "bottom";
+  })(Position || (Position = {}));
 
   var utils = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    get Position () { return Position; },
     default: TinyPopupMenu
   });
 
