@@ -39,7 +39,7 @@
 
     var buttonsTop = document.getElementById('testButtonsTop');
     buttonsTop.append(
-        createTestBtn('Click', (event) => tinyPopupMenu.open({position: 'top', event })),
+        createTestBtn('Click', (event) => tinyPopupMenu.open({position: TinyPopupMenu.Position.Top, event })),
         createTestBtn('Show custom elements in same instance', (event) =>
             tinyPopupMenu.open({
                 event,
@@ -60,7 +60,7 @@
     var buttonsMiddle = document.getElementById('testButtonsMiddle');
     var btnInit =   createTestBtn(
         'Click (position at top)',
-        (event) => tinyPopupMenu.open({ position: 'top', event }),
+        (event) => tinyPopupMenu.open({ position: TinyPopupMenu.Position.Top, event }),
     );
     
     buttonsMiddle.append(
@@ -69,7 +69,7 @@
         ),
         btnInit,
         createTestBtn('Use right click', (event) =>
-            tinyPopupMenu.open({ position: 'bottom', event }),
+            tinyPopupMenu.open({ position: TinyPopupMenu.Position.Bottom, event }),
             'contextmenu'
         ),
         createTestBtn('Click (no arrow)', (event) =>

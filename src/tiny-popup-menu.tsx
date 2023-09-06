@@ -13,6 +13,7 @@ const CLASS_SHOW_ARROW_BOTTOM = ID + '--show-arrow-bottom';
 const CLASS_ITEM = ID + '--item';
 const CLASS_ITEM_SEPARATOR = ID + '--item-separator';
 
+// Count the running instances to add a unique id at each one
 let instances = 1;
 
 /**
@@ -40,9 +41,16 @@ const deepObjectAssign = (target, ...sources) => {
 };
 
 /**
+ * Tiny vanilla javascript library to display popup menus next to button togglers.
+ *
+ * The popup menu uses a fixed position calculated by javascript, allowing the toggler to be inside of scrollables elements, auto adjust margins, evaluate the position (to be on top or at the bottom of the toggler), etc.
+ *
+ * If you want only one menu open at a time, use one instance. Instead if you want multiples menus opened at the same time, create multiples instances.
+ *
  * @fires open
  * @fires close
  * @fires updateposition
+ * @extends TinyEmitter
  */
 export default class TinyPopupMenu extends TinyEmitter {
     private _isOpen = false;
@@ -132,8 +140,9 @@ export default class TinyPopupMenu extends TinyEmitter {
     }
 
     /**
-     * @fires close
      * Close menu
+     *
+     * @fires close
      */
     close(): void {
         if (!this.isOpen()) return;
@@ -149,6 +158,7 @@ export default class TinyPopupMenu extends TinyEmitter {
 
     /**
      * Update the position of an opened menu
+     *
      * @fires updateposition
      */
     updatePosition(silent = true): void {
@@ -301,6 +311,7 @@ export default class TinyPopupMenu extends TinyEmitter {
     }
 
     /**
+     * Retunrs true if the insatance has an open menu
      *
      * @returns
      */
@@ -397,29 +408,45 @@ export default class TinyPopupMenu extends TinyEmitter {
     }
 }
 
-export const enum Position {
+/**
+ * Available menu positions
+ */
+export enum Position {
     Top = 'top',
     Bottom = 'bottom'
 }
 
+/**
+ *
+ */
+export interface OpenOptions extends Options {
+    event: MouseEvent;
+}
+
+/**
+ *
+ */
 export interface Options {
     /**
      * Close menu after selecting an item
+     * Defaults is true;
      */
     autoClose?: boolean;
 
     /**
-     *
+     * Show the menu at top or at bottom of the toggler
+     * Default is 'bottom'
      */
     position?: Position;
 
     /**
-     * Margin between the menu and the toggler button
+     * Margin between the menu and the toggler button.
+     * Default is 10 if `arrow` is true, otherwise is 2
      */
     margin?: number;
 
     /**
-     * Offset to dispaly the menu
+     * Offset to display the menu
      */
     offset?: {
         x?: number;
@@ -427,14 +454,21 @@ export interface Options {
     };
 
     /**
-     * Classname to add to the popup menu
+     * Custom classname to add to the popup menu
      */
     className?: string;
 
     /**
-     *  Show css arrow
+     * Show css arrow
+     * Default is `true`
      */
     arrow?: boolean;
+
+    /**
+     * Prevent event propagation
+     * Default is `true`
+     */
+    stopClick?: boolean;
 
     /**
      * Menu items to display in the menu
@@ -455,13 +489,4 @@ export interface Options {
           }
         | '-'
     >;
-
-    /**
-     * Prevent event propagation
-     */
-    stopClick?: boolean;
-}
-
-export interface OpenOptions extends Options {
-    event: MouseEvent;
 }
