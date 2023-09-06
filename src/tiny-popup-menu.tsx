@@ -72,7 +72,7 @@ export default class TinyPopupMenu extends TinyEmitter {
     open(options: OpenOptions): void {
         this._options = this._parseOptions(options) as OpenOptions;
 
-        if (this._isOpen) {
+        if (this.isOpen()) {
             // clean menu items
             this.close();
 
@@ -136,12 +136,14 @@ export default class TinyPopupMenu extends TinyEmitter {
      * Close menu
      */
     close(): void {
+        if (!this.isOpen()) return;
+
         this._containerMenu.innerHTML = '';
         this._containerMenu.remove();
 
         this._toggler.classList.remove(CLASS_OPEN);
-        this._isOpen = false;
         this.removeEventListeners();
+        this._isOpen = false;
         this.emit('close');
     }
 
@@ -177,7 +179,7 @@ export default class TinyPopupMenu extends TinyEmitter {
             return position;
         };
 
-        if (!this._isOpen) return;
+        if (!this.isOpen()) return;
 
         const { offset, className, arrow, position, margin } = this._options;
 
@@ -299,6 +301,14 @@ export default class TinyPopupMenu extends TinyEmitter {
     }
 
     /**
+     *
+     * @returns
+     */
+    isOpen(): boolean {
+        return this._isOpen;
+    }
+
+    /**
      * Merge default options, instance options, and single open method options
      * @param options
      * @returns
@@ -361,14 +371,14 @@ export default class TinyPopupMenu extends TinyEmitter {
         };
 
         this._resizeListener = () => {
-            if (this._isOpen) {
+            if (this.isOpen()) {
                 this.updatePosition(false);
             }
         };
 
         this._scrollListener = (evt) => {
             if (
-                this._isOpen &&
+                this.isOpen() &&
                 (evt.target as HTMLElement).contains(this._toggler)
             ) {
                 this.updatePosition(false);
