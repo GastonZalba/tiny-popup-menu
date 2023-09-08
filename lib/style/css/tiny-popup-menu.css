@@ -55,7 +55,7 @@
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
   left: calc(50% - var(--ofx) - 2px);
-  top: -14px;
+  top: -17px;
 }
 .popup-menu.popup-menu--show-arrow.popup-menu--show-arrow-top:before {
   border-top: 8px solid transparent;
@@ -71,7 +71,7 @@
   border-right: 10px solid transparent;
   border-left: 10px solid transparent;
   left: calc(50% - var(--ofx) - 2px);
-  bottom: -14px;
+  bottom: -17px;
 }
 .popup-menu.popup-menu--show-arrow.popup-menu--show-arrow-bottom:before {
   border-top: 8px solid #ffffff;
