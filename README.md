@@ -20,7 +20,7 @@ If you want only one menu open at a time, use a unique instance. But if you want
 <img src="screenshots/example.gif" alt="Example">
 
 ## Example
-See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.6/examples/basic.html).
+See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.7/examples/basic.html).
 
 ## Usage
 ### Creating an instance
