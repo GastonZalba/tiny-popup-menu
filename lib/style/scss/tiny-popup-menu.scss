@@ -49,6 +49,7 @@
 
             .popup-menu--submenu-content {
                 position: absolute;
+                visibility: hidden;
                 opacity: 0;
                 top: 0;
                 min-width: max-content;
@@ -86,6 +87,7 @@
             &:focus {
                 .popup-menu--submenu-content {
                     opacity: 1;
+                    visibility: visible;
                 }
             }
         }
