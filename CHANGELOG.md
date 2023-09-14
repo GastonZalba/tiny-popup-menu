@@ -8,3 +8,7 @@
 * Improved postcss configuration
 * Improved some scss variables
 * Added dist css minified version
+
+## 1.0.9
+* Added `visibility:hidden` to submenu
+* Updated screenshot

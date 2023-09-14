@@ -89,7 +89,7 @@
 
     var buttonsMiddle = document.getElementById('testButtonsMiddle');
     var btnInit =   createTestBtn(
-        'Click (position at top)',
+        'Click',
         (event) => tinyPopupMenu.open({ position: TinyPopupMenu.Position.Top, event }),
     );
     
