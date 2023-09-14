@@ -155,9 +155,9 @@ TypeScript types are shipped with the project in the dist directory and should b
 
 ## TODO
 - Add `left` and `right` positions
+- Add transitions/animations
 - Add hoverable option
 - Improve README
-- Add hoverable submenu
 - Themes
 
 ## License

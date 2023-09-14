@@ -4,6 +4,7 @@ import del from 'rollup-plugin-delete';
 import path from 'path';
 import copy from 'rollup-plugin-copy';
 import banner2 from 'rollup-plugin-banner2'
+import svg from 'rollup-plugin-svg-import';
 import { readFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
 
@@ -33,6 +34,7 @@ export default {
             declarationDir: 'lib',
             outputToFilesystem: true
         }),
+        svg(),
         postcss({
             extensions: ['.css', '.sass', '.scss'], 
             inject: false,

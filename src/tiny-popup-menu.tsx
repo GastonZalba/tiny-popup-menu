@@ -3,6 +3,11 @@ import { TinyEmitter } from 'tiny-emitter';
 import myPragma from './myPragma';
 
 import './assets/scss/tiny-popup-menu.scss';
+import { defaultOptions } from './defaults.js';
+import { Position, SubmenuPosition } from './@enums.js';
+
+import arrowLeft from './assets/svg/arrow_left.svg';
+import arrowRight from './assets/svg/arrow_right.svg';
 
 const ID = 'popup-menu';
 const CLASS_CONTAINER = ID + '--container';
@@ -11,6 +16,9 @@ const CLASS_SHOW_ARROW = ID + '--show-arrow';
 const CLASS_SHOW_ARROW_TOP = ID + '--show-arrow-top';
 const CLASS_SHOW_ARROW_BOTTOM = ID + '--show-arrow-bottom';
 const CLASS_ITEM = ID + '--item';
+const CLASS_SUBMENU = ID + '--submenu';
+const CLASS_SUBMENU_ARROW = ID + '--submenu-arrow';
+const CLASS_SUBMENU_CONTENT = ID + '--submenu-content';
 const CLASS_ITEM_SEPARATOR = ID + '--item-separator';
 
 // Count the running instances to add a unique id at each one
@@ -77,7 +85,7 @@ export default class TinyPopupMenu extends TinyEmitter {
      * @param options
      * @returns
      */
-    open(options: OpenOptions): void {
+    public open(options: OpenOptions): void {
         this._options = this._parseOptions(options) as OpenOptions;
 
         if (this.isOpen()) {
@@ -98,33 +106,26 @@ export default class TinyPopupMenu extends TinyEmitter {
 
         this._toggler = event.currentTarget as HTMLElement;
 
+        let hasSubmenu = false;
+
         this._menuItemsList = menuItems.map((item) => {
             if (item === '-') {
                 return <span className={CLASS_ITEM_SEPARATOR}></span>;
+            } else if ('items' in item) {
+                hasSubmenu = true;
+                return this._processSubMenu(item, autoClose);
             } else {
-                return (
-                    <div
-                        className={CLASS_ITEM + ' ' + (item.className || '')}
-                        onClick={
-                            item.callback
-                                ? (event: MouseEvent) => {
-                                      item.callback(event);
-                                      if (autoClose) this.close();
-                                  }
-                                : null
-                        }
-                        id={item.id}
-                        style={item.style}
-                    >
-                        {item.content}
-                    </div>
-                );
+                return this._processMenuItem(item, autoClose);
             }
         });
 
         this._isOpen = true;
 
         this.updatePosition();
+
+        if (hasSubmenu) {
+            this._updateSubmenusPosition();
+        }
 
         // delay to prevent click be fired inmediatly if `stopClick` is false
         setTimeout(() => {
@@ -144,7 +145,7 @@ export default class TinyPopupMenu extends TinyEmitter {
      *
      * @fires close
      */
-    close(): void {
+    public close(): void {
         if (!this.isOpen()) return;
 
         this._containerMenu.innerHTML = '';
@@ -161,7 +162,7 @@ export default class TinyPopupMenu extends TinyEmitter {
      *
      * @fires updateposition
      */
-    updatePosition(silent = true): void {
+    public updatePosition(silent = true): void {
         /**
          * Check if the default position is ok or needs to be inverted
          */
@@ -294,7 +295,7 @@ export default class TinyPopupMenu extends TinyEmitter {
      * @param options
      * @param type
      */
-    addToggler(
+    public addToggler(
         el: HTMLElement,
         options: Options = {},
         type: 'click' | 'contextmenu' = 'click'
@@ -315,7 +316,7 @@ export default class TinyPopupMenu extends TinyEmitter {
      *
      * @returns
      */
-    isOpen(): boolean {
+    public isOpen(): boolean {
         return this._isOpen;
     }
 
@@ -325,20 +326,6 @@ export default class TinyPopupMenu extends TinyEmitter {
      * @returns
      */
     protected _parseOptions(options: Options): Options | OpenOptions {
-        const defaultOptions: Options = {
-            position: Position.Bottom,
-            className: '',
-            autoClose: true,
-            arrow: true,
-            margin: undefined, // autocalculate later
-            offset: {
-                x: 0,
-                y: 0
-            },
-            menuItems: [],
-            stopClick: true
-        };
-
         const mergedOptions = deepObjectAssign(
             {},
             defaultOptions,
@@ -356,6 +343,115 @@ export default class TinyPopupMenu extends TinyEmitter {
         }
 
         return mergedOptions;
+    }
+
+    /**
+     *
+     * @param submenu
+     * @param autoClose
+     */
+    protected _processSubMenu(
+        submenu: Submenu,
+        autoClose: boolean
+    ): HTMLElement {
+        return (
+            <div
+                className={CLASS_SUBMENU + ' ' + (submenu.className || '')}
+                id={submenu.id}
+                style={submenu.style}
+                data-position={submenu.position || SubmenuPosition.Right}
+            >
+                <span>{submenu.content}</span>
+                <div className={CLASS_SUBMENU_ARROW}></div>
+                <div className={CLASS_SUBMENU_CONTENT}>
+                    {submenu.items.map((item) =>
+                        this._processMenuItem(item, autoClose)
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    /**
+     *
+     * @param item
+     * @param autoClose
+     */
+    protected _processMenuItem(
+        item: MenuItem,
+        autoClose: boolean
+    ): HTMLElement {
+        return (
+            <div
+                className={CLASS_ITEM + ' ' + (item.className || '')}
+                onClick={
+                    item.callback
+                        ? (event: MouseEvent) => {
+                              item.callback(event);
+                              if (autoClose) this.close();
+                          }
+                        : null
+                }
+                id={item.id}
+                style={item.style}
+            >
+                {item.content}
+            </div>
+        );
+    }
+
+    /**
+     *
+     */
+    protected _updateSubmenusPosition() {
+        const submenus = this._containerMenu.querySelectorAll<HTMLElement>(
+            '.' + CLASS_SUBMENU
+        );
+
+        submenus.forEach((submenu) => {
+            const position = submenu.dataset.position as SubmenuPosition;
+            const submenuContent = submenu.querySelector<HTMLElement>(
+                '.' + CLASS_SUBMENU_CONTENT
+            );
+
+            const submenuPosition = submenuContent.getBoundingClientRect();
+            const submenuWidth = submenuContent.offsetWidth;
+
+            /**
+             * Check if the default position is ok or needs to be inverted
+             */
+            const evaluatePosition = (): SubmenuPosition => {
+                if (position === SubmenuPosition.Left) {
+                    if (submenuPosition.right - submenuWidth <= 0) {
+                        return SubmenuPosition.Right;
+                    }
+                } else if (position === SubmenuPosition.Right) {
+                    if (
+                        submenuPosition.right + submenuWidth >=
+                        document.documentElement.offsetWidth
+                    ) {
+                        return SubmenuPosition.Left;
+                    }
+                }
+
+                return position;
+            };
+
+            const calculatedPosition = evaluatePosition();
+            submenu.classList.add(CLASS_SUBMENU + '-' + calculatedPosition);
+
+            // add arrow indicator
+            const submenuArrow = submenu.querySelector<HTMLElement>(
+                '.' + CLASS_SUBMENU_ARROW
+            );
+            submenuArrow.innerHTML = '';
+
+            if (calculatedPosition === SubmenuPosition.Left) {
+                submenuArrow.append(arrowLeft());
+            } else if (position === SubmenuPosition.Right) {
+                submenuArrow.append(arrowRight());
+            }
+        });
     }
 
     protected _evaluateArrowPosition(position: Position) {
@@ -408,23 +504,49 @@ export default class TinyPopupMenu extends TinyEmitter {
     }
 }
 
-/**
- * Available menu positions
- */
-export enum Position {
-    Top = 'top',
-    Bottom = 'bottom'
-}
+export * from './@enums.js';
 
 /**
- *
+ * **_[interface]_**
  */
 export interface OpenOptions extends Options {
     event: MouseEvent;
 }
 
 /**
- *
+ * **_[interface]_**
+ */
+export interface Submenu {
+    content: string | HTMLElement;
+    items: MenuItem[];
+    /**
+     * Default is right
+     */
+    position?: SubmenuPosition;
+    id?: string;
+    className?: string;
+    style?: string;
+}
+
+/**
+ * **_[interface]_**
+ */
+export interface MenuItem {
+    content?: string | HTMLElement;
+    id?: string;
+    className?: string;
+    style?: string;
+    dataset?: any;
+
+    /**
+     * Function called when an item is clicked
+     * @returns
+     */
+    callback?: (evt: MouseEvent) => void;
+}
+
+/**
+ * **_[interface]_**
  */
 export interface Options {
     /**
@@ -473,20 +595,5 @@ export interface Options {
     /**
      * Menu items to display in the menu
      */
-    menuItems?: Array<
-        | {
-              content?: string | HTMLElement;
-              id?: string;
-              className?: string;
-              style?: string;
-              dataset?: any;
-
-              /**
-               * Function called when an item is clicked
-               * @returns
-               */
-              callback?: (evt: MouseEvent) => void;
-          }
-        | '-'
-    >;
+    menuItems?: Array<MenuItem | Submenu | '-'>;
 }

@@ -23,10 +23,24 @@
             },
             '-',
             {
+                content: 'Submenu',
+                items: [
+                    {
+                        content: 'Submenu item',
+                        callback: () => alert('Submenu item')
+                    },
+                    {
+                        content: 'Submenu item 2',
+                        callback: () => alert('Submenu item 2')
+                    }
+                ]
+            },
+            '-',
+            {
                 content: 'Delete',
                 callback: () => alert('Delete!'),
                 className: 'delete'
-            }
+            },          
         ]
     });
 
@@ -47,6 +61,22 @@
                     {
                         content: 'Custom element'
                     },
+                    '-',
+                    {
+                        content: 'Submenu to the left',
+                        position: TinyPopupMenu.SubmenuPosition.Left,
+                        items: [
+                            {
+                                content: 'Submenu item',
+                                callback: () => alert('Submenu item')
+                            },
+                            {
+                                content: 'Submenu item 2',
+                                callback: () => alert('Submenu item 2')
+                            }
+                        ]
+                    },
+                    '-',
                     {
                         content: 'Custom disabled element',
                         className: 'disabled'

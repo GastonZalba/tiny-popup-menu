@@ -8,6 +8,7 @@ import livereload from 'rollup-plugin-livereload';
 import path from 'path';
 import commonjs from '@rollup/plugin-commonjs';
 import banner2 from 'rollup-plugin-banner2';
+import svg from 'rollup-plugin-svg-import';
 import { readFileSync } from 'fs';
 const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
 
@@ -22,14 +23,7 @@ const globals = (id) => {
     const globals = {
         myPragma: 'myPragma'
     };
-
-    if (/ol(\\|\/)/.test(id)) {
-        return id.replace(/\//g, '.').replace('.js', '');
-    } else if (id in globals) {
-        return globals[id];
-    }
-
-    return id;
+    return globals[id];
 };
 
 export default function (commandOptions) {
@@ -61,6 +55,7 @@ export default function (commandOptions) {
                 declarationDir: 'dist',
                 outputToFilesystem: true
             }),
+            svg(),
             resolve(),
             postcss({
                 extensions: ['.css', '.sass', '.scss'],
@@ -75,7 +70,9 @@ export default function (commandOptions) {
                     open: false,
                     verbose: true,
                     contentBase: ['', 'examples'],
-                    historyApiFallback: `/${commandOptions.example || 'basic'}.html`,
+                    historyApiFallback: `/${
+                        commandOptions.example || 'basic'
+                    }.html`,
                     host: 'localhost',
                     port: 3001,
                     // execute function after server has begun listening
