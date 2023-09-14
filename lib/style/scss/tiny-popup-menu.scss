@@ -8,28 +8,90 @@
     z-index: 9999;
     font-family: sans-serif;
 
+    .popup-menu--submenu-content,
     .popup-menu--container {
         background: $tpm-background;
         border-radius: $tpm-borderRadius;
         border: $tpm-border;
         box-shadow: $tpm-boxShadow;
-        position: relative;
         z-index: 9998;
         padding: 10px 0;
-        color: #616161;
+    }
+
+    .popup-menu--container {
+        position: relative;
+        color: $tmp-txtColor;
         font-size: 13px;
         letter-spacing: 0;
         text-transform: none;
         text-align: center;
 
+        .popup-menu--submenu,
         .popup-menu--item {
-            cursor: pointer;
             font-weight: 100;
             padding: 6px 16px;
-
+            &:focus,
+            &:active,
             &:hover {
                 background: $tpm-backgroundHover;
             }
+        }
+
+        .popup-menu--submenu {
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            > span {
+                cursor: default;
+                margin: auto;
+            }
+
+            .popup-menu--submenu-content {
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                min-width: max-content;
+            }
+
+            .popup-menu--submenu-arrow {
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: $tmp-txtColor;
+                }
+            }
+
+            &.popup-menu--submenu-right {
+                .popup-menu--submenu-arrow {
+                    margin-left: -12px;
+                    margin-right: -8px;
+                }
+                .popup-menu--submenu-content {
+                    left: 100%;
+                }
+            }
+
+            &.popup-menu--submenu-left {
+                .popup-menu--submenu-arrow {
+                    margin-left: -12px;
+                    order: -1;
+                }
+                .popup-menu--submenu-content {
+                    right: 100%;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                .popup-menu--submenu-content {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .popup-menu--item {
+            cursor: pointer;
         }
 
         .popup-menu--item-separator {

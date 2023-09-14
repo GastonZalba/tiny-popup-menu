@@ -1,5 +1,6 @@
 import { TinyEmitter } from 'tiny-emitter';
 import './assets/scss/tiny-popup-menu.scss';
+import { Position, SubmenuPosition } from './@enums.js';
 /**
  * Tiny vanilla javascript library to display popup menus next to button togglers.
  *
@@ -63,25 +64,64 @@ export default class TinyPopupMenu extends TinyEmitter {
      * @returns
      */
     protected _parseOptions(options: Options): Options | OpenOptions;
+    /**
+     *
+     * @param submenu
+     * @param autoClose
+     */
+    protected _processSubMenu(submenu: Submenu, autoClose: boolean): HTMLElement;
+    /**
+     *
+     * @param item
+     * @param autoClose
+     */
+    protected _processMenuItem(item: MenuItem, autoClose: boolean): HTMLElement;
+    /**
+     *
+     */
+    protected _updateSubmenusPosition(): void;
     protected _evaluateArrowPosition(position: Position): void;
     protected addEventListeners(): void;
     protected removeEventListeners(): void;
 }
+export * from './@enums.js';
 /**
- * Available menu positions
- */
-export declare enum Position {
-    Top = "top",
-    Bottom = "bottom"
-}
-/**
- *
+ * **_[interface]_**
  */
 export interface OpenOptions extends Options {
     event: MouseEvent;
 }
 /**
- *
+ * **_[interface]_**
+ */
+export interface Submenu {
+    content: string | HTMLElement;
+    items: MenuItem[];
+    /**
+     * Default is right
+     */
+    position?: SubmenuPosition;
+    id?: string;
+    className?: string;
+    style?: string;
+}
+/**
+ * **_[interface]_**
+ */
+export interface MenuItem {
+    content?: string | HTMLElement;
+    id?: string;
+    className?: string;
+    style?: string;
+    dataset?: any;
+    /**
+     * Function called when an item is clicked
+     * @returns
+     */
+    callback?: (evt: MouseEvent) => void;
+}
+/**
+ * **_[interface]_**
  */
 export interface Options {
     /**
@@ -123,17 +163,6 @@ export interface Options {
     /**
      * Menu items to display in the menu
      */
-    menuItems?: Array<{
-        content?: string | HTMLElement;
-        id?: string;
-        className?: string;
-        style?: string;
-        dataset?: any;
-        /**
-         * Function called when an item is clicked
-         * @returns
-         */
-        callback?: (evt: MouseEvent) => void;
-    } | '-'>;
+    menuItems?: Array<MenuItem | Submenu | '-'>;
 }
 //# sourceMappingURL=tiny-popup-menu.d.ts.map

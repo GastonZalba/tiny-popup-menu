@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.6
+ * tiny-popup-menu - v1.0.8
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Sat Sep 09 2023 15:16:28 GMT-0300 (Argentina Standard Time)
+ * Built: Thu Sep 14 2023 18:28:30 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -115,6 +115,42 @@
       return elem;
   }
 
+  /**
+   * Available menu positions
+   */
+  var Position;
+  (function (Position) {
+      Position["Top"] = "top";
+      Position["Bottom"] = "bottom";
+  })(Position || (Position = {}));
+  var SubmenuPosition;
+  (function (SubmenuPosition) {
+      SubmenuPosition["Left"] = "left";
+      SubmenuPosition["Right"] = "right";
+  })(SubmenuPosition || (SubmenuPosition = {}));
+
+  const defaultOptions = {
+      position: Position.Bottom,
+      className: '',
+      autoClose: true,
+      arrow: true,
+      margin: undefined,
+      offset: {
+          x: 0,
+          y: 0
+      },
+      menuItems: [],
+      stopClick: true
+  };
+
+  function arrowLeft() {
+  	return (new DOMParser().parseFromString("<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" width=\"768\" height=\"768\" viewBox=\"0 0 768 768\">\r\n<path d=\"M493.5 531l-45 45-192-192 192-192 45 45-147 147z\"></path>\r\n</svg>\r\n", 'image/svg+xml')).firstChild;
+  }
+
+  function arrowRight() {
+  	return (new DOMParser().parseFromString("<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" width=\"768\" height=\"768\" viewBox=\"0 0 768 768\">\r\n<path d=\"M274.5 531l147-147-147-147 45-45 192 192-192 192z\"></path>\r\n</svg>\r\n", 'image/svg+xml')).firstChild;
+  }
+
   const ID = 'popup-menu';
   const CLASS_CONTAINER = ID + '--container';
   const CLASS_OPEN = ID + '--active';
@@ -122,6 +158,9 @@
   const CLASS_SHOW_ARROW_TOP = ID + '--show-arrow-top';
   const CLASS_SHOW_ARROW_BOTTOM = ID + '--show-arrow-bottom';
   const CLASS_ITEM = ID + '--item';
+  const CLASS_SUBMENU = ID + '--submenu';
+  const CLASS_SUBMENU_ARROW = ID + '--submenu-arrow';
+  const CLASS_SUBMENU_CONTENT = ID + '--submenu-content';
   const CLASS_ITEM_SEPARATOR = ID + '--item-separator';
   // Count the running instances to add a unique id at each one
   let instances = 1;
@@ -190,22 +229,24 @@
           }
           const { event, menuItems, autoClose, stopClick } = this._options;
           this._toggler = event.currentTarget;
+          let hasSubmenu = false;
           this._menuItemsList = menuItems.map((item) => {
               if (item === '-') {
                   return createElement("span", { className: CLASS_ITEM_SEPARATOR });
               }
+              else if ('items' in item) {
+                  hasSubmenu = true;
+                  return this._processSubMenu(item, autoClose);
+              }
               else {
-                  return (createElement("div", { className: CLASS_ITEM + ' ' + (item.className || ''), onClick: item.callback
-                          ? (event) => {
-                              item.callback(event);
-                              if (autoClose)
-                                  this.close();
-                          }
-                          : null, id: item.id, style: item.style }, item.content));
+                  return this._processMenuItem(item, autoClose);
               }
           });
           this._isOpen = true;
           this.updatePosition();
+          if (hasSubmenu) {
+              this._updateSubmenusPosition();
+          }
           // delay to prevent click be fired inmediatly if `stopClick` is false
           setTimeout(() => {
               this.addEventListeners();
@@ -354,19 +395,6 @@
        * @returns
        */
       _parseOptions(options) {
-          const defaultOptions = {
-              position: Position.Bottom,
-              className: '',
-              autoClose: true,
-              arrow: true,
-              margin: undefined,
-              offset: {
-                  x: 0,
-                  y: 0
-              },
-              menuItems: [],
-              stopClick: true
-          };
           const mergedOptions = deepObjectAssign({}, defaultOptions, this._instanceOptions || {}, options || {});
           // if margin is not setled, add a default ones
           if (mergedOptions.margin === undefined) {
@@ -375,6 +403,71 @@
                   : 2;
           }
           return mergedOptions;
+      }
+      /**
+       *
+       * @param submenu
+       * @param autoClose
+       */
+      _processSubMenu(submenu, autoClose) {
+          return (createElement("div", { className: CLASS_SUBMENU + ' ' + (submenu.className || ''), id: submenu.id, style: submenu.style, "data-position": submenu.position || SubmenuPosition.Right },
+              createElement("span", null, submenu.content),
+              createElement("div", { className: CLASS_SUBMENU_ARROW }),
+              createElement("div", { className: CLASS_SUBMENU_CONTENT }, submenu.items.map((item) => this._processMenuItem(item, autoClose)))));
+      }
+      /**
+       *
+       * @param item
+       * @param autoClose
+       */
+      _processMenuItem(item, autoClose) {
+          return (createElement("div", { className: CLASS_ITEM + ' ' + (item.className || ''), onClick: item.callback
+                  ? (event) => {
+                      item.callback(event);
+                      if (autoClose)
+                          this.close();
+                  }
+                  : null, id: item.id, style: item.style }, item.content));
+      }
+      /**
+       *
+       */
+      _updateSubmenusPosition() {
+          const submenus = this._containerMenu.querySelectorAll('.' + CLASS_SUBMENU);
+          submenus.forEach((submenu) => {
+              const position = submenu.dataset.position;
+              const submenuContent = submenu.querySelector('.' + CLASS_SUBMENU_CONTENT);
+              const submenuPosition = submenuContent.getBoundingClientRect();
+              const submenuWidth = submenuContent.offsetWidth;
+              /**
+               * Check if the default position is ok or needs to be inverted
+               */
+              const evaluatePosition = () => {
+                  if (position === SubmenuPosition.Left) {
+                      if (submenuPosition.right - submenuWidth <= 0) {
+                          return SubmenuPosition.Right;
+                      }
+                  }
+                  else if (position === SubmenuPosition.Right) {
+                      if (submenuPosition.right + submenuWidth >=
+                          document.documentElement.offsetWidth) {
+                          return SubmenuPosition.Left;
+                      }
+                  }
+                  return position;
+              };
+              const calculatedPosition = evaluatePosition();
+              submenu.classList.add(CLASS_SUBMENU + '-' + calculatedPosition);
+              // add arrow indicator
+              const submenuArrow = submenu.querySelector('.' + CLASS_SUBMENU_ARROW);
+              submenuArrow.innerHTML = '';
+              if (calculatedPosition === SubmenuPosition.Left) {
+                  submenuArrow.append(arrowLeft());
+              }
+              else if (position === SubmenuPosition.Right) {
+                  submenuArrow.append(arrowRight());
+              }
+          });
       }
       _evaluateArrowPosition(position) {
           let arrowPositionClass = '';
@@ -416,18 +509,11 @@
           window.removeEventListener('scroll', this._scrollListener);
       }
   }
-  /**
-   * Available menu positions
-   */
-  var Position;
-  (function (Position) {
-      Position["Top"] = "top";
-      Position["Bottom"] = "bottom";
-  })(Position || (Position = {}));
 
   var utils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     get Position () { return Position; },
+    get SubmenuPosition () { return SubmenuPosition; },
     default: TinyPopupMenu
   });
 
