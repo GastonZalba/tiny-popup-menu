@@ -38,7 +38,13 @@ export default {
         postcss({
             extensions: ['.css', '.sass', '.scss'], 
             inject: false,
-            extract: path.resolve('lib/style/css/tiny-popup-menu.css')
+            extract: path.resolve('lib/style/css/tiny-popup-menu.css'),
+            config: {
+                path: './postcss.config.cjs',
+                ctx: {
+                    isDev: false
+                }
+            }
         }),
         copy({
             targets: [
