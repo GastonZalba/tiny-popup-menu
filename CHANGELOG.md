@@ -12,3 +12,8 @@
 ## 1.0.9
 * Added `visibility:hidden` to submenu
 * Updated screenshot
+
+## 1.0.10
+* Added helper function `addSeparator`
+* Improved `position` type
+* Added min-width css

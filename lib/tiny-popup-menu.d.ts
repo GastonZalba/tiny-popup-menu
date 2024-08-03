@@ -80,11 +80,17 @@ export default class TinyPopupMenu extends TinyEmitter {
      *
      */
     protected _updateSubmenusPosition(): void;
-    protected _evaluateArrowPosition(position: Position): void;
+    protected _evaluateArrowPosition(position: PositionType): void;
     protected addEventListeners(): void;
     protected removeEventListeners(): void;
 }
 export * from './@enums.js';
+/**
+ * Helper function to automaticaly add a separator between an array of sections
+ * @param sections
+ * @returns
+ */
+export declare function addSeparator(sections: Array<MenuItem | Submenu>[]): (MenuItem | Submenu | "-")[];
 /**
  * **_[interface]_**
  */
@@ -120,6 +126,7 @@ export interface MenuItem {
      */
     callback?: (evt: MouseEvent) => void;
 }
+type PositionType = `${Position}`;
 /**
  * **_[interface]_**
  */
@@ -133,7 +140,7 @@ export interface Options {
      * Show the menu at top or at bottom of the toggler
      * Default is 'bottom'
      */
-    position?: Position;
+    position?: PositionType;
     /**
      * Margin between the menu and the toggler button.
      * Default is 10 if `arrow` is true, otherwise is 2

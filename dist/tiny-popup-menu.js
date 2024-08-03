@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.9
+ * tiny-popup-menu - v1.0.10
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Thu Sep 14 2023 19:16:52 GMT-0300 (Argentina Standard Time)
+ * Built: Sat Aug 03 2024 15:18:31 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -509,11 +509,23 @@
           window.removeEventListener('scroll', this._scrollListener);
       }
   }
+  /**
+   * Helper function to automaticaly add a separator between an array of sections
+   * @param sections
+   * @returns
+   */
+  function addSeparator(sections) {
+      const separator = '-';
+      return sections.reduce((acc, val) => {
+          return acc.length ? [...acc, separator, ...val] : [...acc, ...val];
+      }, []);
+  }
 
   var utils = /*#__PURE__*/Object.freeze({
     __proto__: null,
     get Position () { return Position; },
     get SubmenuPosition () { return SubmenuPosition; },
+    addSeparator: addSeparator,
     default: TinyPopupMenu
   });
 
