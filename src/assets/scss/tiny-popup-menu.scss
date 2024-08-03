@@ -2,6 +2,7 @@
 
 .popup-menu {
     width: max-content;
+    min-width: 50px;
     right: 0;
     padding: 0;
     --ofx: $tmp-arrowWidth;

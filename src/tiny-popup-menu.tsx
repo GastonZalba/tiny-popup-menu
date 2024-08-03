@@ -166,7 +166,7 @@ export default class TinyPopupMenu extends TinyEmitter {
         /**
          * Check if the default position is ok or needs to be inverted
          */
-        const evaluatePosition = (): Position => {
+        const evaluatePosition = (): PositionType => {
             if (position === Position.Top) {
                 if (
                     togglerPosition.top - menuHeight - offsetTop - margin <=
@@ -454,7 +454,7 @@ export default class TinyPopupMenu extends TinyEmitter {
         });
     }
 
-    protected _evaluateArrowPosition(position: Position) {
+    protected _evaluateArrowPosition(position: PositionType) {
         let arrowPositionClass = '';
 
         switch (position) {
@@ -507,6 +507,19 @@ export default class TinyPopupMenu extends TinyEmitter {
 export * from './@enums.js';
 
 /**
+ * Helper function to automaticaly add a separator between an array of sections
+ * @param sections
+ * @returns
+ */
+export function addSeparator(sections: Array<MenuItem | Submenu>[]) {
+    const separator = '-' as const;
+
+    return sections.reduce((acc, val) => {
+        return acc.length ? [...acc, separator, ...val] : [...acc, ...val];
+    }, []);
+}
+
+/**
  * **_[interface]_**
  */
 export interface OpenOptions extends Options {
@@ -545,6 +558,8 @@ export interface MenuItem {
     callback?: (evt: MouseEvent) => void;
 }
 
+type PositionType = `${Position}`;
+
 /**
  * **_[interface]_**
  */
@@ -559,7 +574,7 @@ export interface Options {
      * Show the menu at top or at bottom of the toggler
      * Default is 'bottom'
      */
-    position?: Position;
+    position?: PositionType;
 
     /**
      * Margin between the menu and the toggler button.
