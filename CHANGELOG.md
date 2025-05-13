@@ -17,3 +17,9 @@
 * Added helper function `addSeparator`
 * Improved `position` type
 * Added min-width css
+
+## 1.0.11
+* Fix typo in README and example (`autoclose` to `autoClose`)
+* Only apply style `cursor: pointer` if item has an existing callback function (created class `popup-menu--item-clickleable`)
+* Added item option `autoClose` to allow an individual control 
+* Added an input checkbox in the example (with `autoClose` disabled)

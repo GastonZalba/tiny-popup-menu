@@ -9,9 +9,18 @@
         return btn;
     }
 
+    var checkboxInput = document.createElement('input');
+    checkboxInput.type = 'checkbox';
+    checkboxInput.checkd = true;
+
+    var checkboxLabel = document.createElement('label');    
+    checkboxLabel.innerText = 'Test checkbox ';
+    checkboxLabel.append(checkboxInput)
+
+
     // use here options shared across all elements
     var tinyPopupMenu = new TinyPopupMenu({
-        autoclose: true,
+        autoClose: true,
         menuItems: [
             {
                 content: 'Click to display alert 😎',
@@ -20,6 +29,13 @@
             {
                 content: 'Click to display another alert',
                 callback: () => alert('Another alert')
+            },
+            '-',
+            {
+                content: checkboxLabel,
+                autoClose: false,
+                className: 'custom-padding',
+                callback: null
             },
             '-',
             {
@@ -40,7 +56,7 @@
                 content: 'Delete',
                 callback: () => alert('Delete!'),
                 className: 'delete'
-            },          
+            }
         ]
     });
 
@@ -53,7 +69,9 @@
 
     var buttonsTop = document.getElementById('testButtonsTop');
     buttonsTop.append(
-        createTestBtn('Click', (event) => tinyPopupMenu.open({position: TinyPopupMenu.Position.Top, event })),
+        createTestBtn('Click', (event) =>
+            tinyPopupMenu.open({ position: TinyPopupMenu.Position.Top, event })
+        ),
         createTestBtn('Show custom elements in same instance', (event) =>
             tinyPopupMenu.open({
                 event,
@@ -88,18 +106,22 @@
     );
 
     var buttonsMiddle = document.getElementById('testButtonsMiddle');
-    var btnInit =   createTestBtn(
-        'Click',
-        (event) => tinyPopupMenu.open({ position: TinyPopupMenu.Position.Top, event }),
+    var btnInit = createTestBtn('Click', (event) =>
+        tinyPopupMenu.open({ position: TinyPopupMenu.Position.Top, event })
     );
-    
+
     buttonsMiddle.append(
         createTestBtn('Click (no arrow)', (event) =>
             tinyPopupMenu.open({ arrow: false, event })
         ),
         btnInit,
-        createTestBtn('Use right click', (event) =>
-            tinyPopupMenu.open({ position: TinyPopupMenu.Position.Bottom, event }),
+        createTestBtn(
+            'Use right click',
+            (event) =>
+                tinyPopupMenu.open({
+                    position: TinyPopupMenu.Position.Bottom,
+                    event
+                }),
             'contextmenu'
         ),
         createTestBtn('Click (no arrow)', (event) =>
@@ -107,12 +129,14 @@
         )
     );
 
-    var buttonsBottom = document.querySelector('#testButtonsBottom .containerButtons');
+    var buttonsBottom = document.querySelector(
+        '#testButtonsBottom .containerButtons'
+    );
     buttonsBottom.append(
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event }))
     );
 
-    btnInit.click()
+    btnInit.click();
 })();

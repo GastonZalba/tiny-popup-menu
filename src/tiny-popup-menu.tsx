@@ -16,6 +16,7 @@ const CLASS_SHOW_ARROW = ID + '--show-arrow';
 const CLASS_SHOW_ARROW_TOP = ID + '--show-arrow-top';
 const CLASS_SHOW_ARROW_BOTTOM = ID + '--show-arrow-bottom';
 const CLASS_ITEM = ID + '--item';
+const CLASS_ITEM_CLICKLEABLE = ID + '--item-clickleable';
 const CLASS_SUBMENU = ID + '--submenu';
 const CLASS_SUBMENU_ARROW = ID + '--submenu-arrow';
 const CLASS_SUBMENU_CONTENT = ID + '--submenu-content';
@@ -375,20 +376,34 @@ export default class TinyPopupMenu extends TinyEmitter {
     /**
      *
      * @param item
-     * @param autoClose
+     * @param autoClose General configuration autoclose
      */
     protected _processMenuItem(
         item: MenuItem,
         autoClose: boolean
     ): HTMLElement {
+        let className = CLASS_ITEM;
+        className += item.callback ? ' ' + CLASS_ITEM_CLICKLEABLE : '';
+        className += item.className ? ' ' + item.className : '';
+
         return (
             <div
-                className={CLASS_ITEM + ' ' + (item.className || '')}
+                className={className}
                 onClick={
                     item.callback
                         ? (event: MouseEvent) => {
                               item.callback(event);
-                              if (autoClose) this.close();
+
+                              // check if the item has a custom autoClose configuration
+                              if ('autoClose' in item) {
+                                  if (item.autoClose) {
+                                      this.close();
+                                  }
+                              } else {
+                                  if (autoClose) {
+                                      this.close();
+                                  }
+                              }
                           }
                         : null
                 }
@@ -550,6 +565,7 @@ export interface MenuItem {
     className?: string;
     style?: string;
     dataset?: any;
+    autoClose?: boolean;
 
     /**
      * Function called when an item is clicked
@@ -565,8 +581,9 @@ type PositionType = `${Position}`;
  */
 export interface Options {
     /**
-     * Close menu after selecting an item
-     * Defaults is true;
+     * Close menu after selecting an item.
+     * Only used if the item has no specific `autoClose` configuration
+     * Defaults is true
      */
     autoClose?: boolean;
 

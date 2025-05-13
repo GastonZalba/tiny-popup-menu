@@ -28,10 +28,11 @@ See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny
 ```js
 var tinyPopupMenu = new TinyPopupMenu({
     /**
-     * Close menu after selecting an item
-     * Defaults is true;
+     * Close menu after selecting an item.
+     * Only used if the item has no specific `autoClose` configuration
+     * Defaults is true
      */
-    autoclose: true,
+    autoClose: true,
 
     /**
      * Show the menu at top or at bottom of the toggler
