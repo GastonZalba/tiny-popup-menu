@@ -8,6 +8,9 @@
   --ofx: $tmp-arrowWidth;
   z-index: 9999;
   font-family: sans-serif;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .popup-menu .popup-menu--submenu-content,
 .popup-menu .popup-menu--container {
@@ -79,7 +82,7 @@
   opacity: 1;
   visibility: visible;
 }
-.popup-menu .popup-menu--container .popup-menu--item {
+.popup-menu .popup-menu--container .popup-menu--item-clickleable {
   cursor: pointer;
 }
 .popup-menu .popup-menu--container .popup-menu--item-separator {

@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.10
+ * tiny-popup-menu - v1.0.11
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Sat Aug 03 2024 15:18:31 GMT-0300 (Argentina Standard Time)
+ * Built: Tue May 13 2025 19:06:55 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -158,6 +158,7 @@
   const CLASS_SHOW_ARROW_TOP = ID + '--show-arrow-top';
   const CLASS_SHOW_ARROW_BOTTOM = ID + '--show-arrow-bottom';
   const CLASS_ITEM = ID + '--item';
+  const CLASS_ITEM_CLICKLEABLE = ID + '--item-clickleable';
   const CLASS_SUBMENU = ID + '--submenu';
   const CLASS_SUBMENU_ARROW = ID + '--submenu-arrow';
   const CLASS_SUBMENU_CONTENT = ID + '--submenu-content';
@@ -418,14 +419,26 @@
       /**
        *
        * @param item
-       * @param autoClose
+       * @param autoClose General configuration autoclose
        */
       _processMenuItem(item, autoClose) {
-          return (createElement("div", { className: CLASS_ITEM + ' ' + (item.className || ''), onClick: item.callback
+          let className = CLASS_ITEM;
+          className += item.callback ? ' ' + CLASS_ITEM_CLICKLEABLE : '';
+          className += item.className ? ' ' + item.className : '';
+          return (createElement("div", { className: className, onClick: item.callback
                   ? (event) => {
                       item.callback(event);
-                      if (autoClose)
-                          this.close();
+                      // check if the item has a custom autoClose configuration
+                      if ('autoClose' in item) {
+                          if (item.autoClose) {
+                              this.close();
+                          }
+                      }
+                      else {
+                          if (autoClose) {
+                              this.close();
+                          }
+                      }
                   }
                   : null, id: item.id, style: item.style }, item.content));
       }

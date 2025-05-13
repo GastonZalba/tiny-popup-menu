@@ -8,6 +8,7 @@
     --ofx: $tmp-arrowWidth;
     z-index: 9999;
     font-family: sans-serif;
+    user-select: none;
 
     .popup-menu--submenu-content,
     .popup-menu--container {
@@ -93,7 +94,7 @@
             }
         }
 
-        .popup-menu--item {
+        .popup-menu--item-clickleable {
             cursor: pointer;
         }
 
