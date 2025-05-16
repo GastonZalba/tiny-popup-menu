@@ -20,18 +20,40 @@
         padding: 10px 0;
     }
 
+    .popup-menu--align-center {
+        .popup-menu--submenu,
+        .popup-menu--item {
+            justify-content: center;
+        }
+    }
+
+    .popup-menu--align-left {
+        .popup-menu--submenu,
+        .popup-menu--item {
+            justify-content: left;
+        }
+    }
+
+    .popup-menu--align-right {
+        .popup-menu--submenu,
+        .popup-menu--item {
+            justify-content: right;
+        }
+    }
+
     .popup-menu--container {
         position: relative;
         color: $tmp-txtColor;
         font-size: 13px;
         letter-spacing: 0;
         text-transform: none;
-        text-align: center;
 
         .popup-menu--submenu,
         .popup-menu--item {
             font-weight: 100;
             padding: 6px 16px;
+            display: flex;
+
             &:focus,
             &:active,
             &:hover {
@@ -46,7 +68,6 @@
 
             > span {
                 cursor: default;
-                margin: auto;
             }
 
             .popup-menu--submenu-content {
@@ -58,6 +79,7 @@
             }
 
             .popup-menu--submenu-arrow {
+                position: absolute;
                 svg {
                     width: 20px;
                     height: 20px;
@@ -66,9 +88,11 @@
             }
 
             &.popup-menu--submenu-right {
+                > span {
+                    padding-right: 15px;
+                }
                 .popup-menu--submenu-arrow {
-                    margin-left: -12px;
-                    margin-right: -8px;
+                    right: 8px;
                 }
                 .popup-menu--submenu-content {
                     left: 100%;
@@ -76,8 +100,11 @@
             }
 
             &.popup-menu--submenu-left {
+                > span {
+                    padding-left: 15px;
+                }
                 .popup-menu--submenu-arrow {
-                    margin-left: -12px;
+                    left: 8px;
                     order: -1;
                 }
                 .popup-menu--submenu-content {

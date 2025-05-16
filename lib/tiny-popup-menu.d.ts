@@ -104,6 +104,10 @@ export interface Submenu {
     content: string | HTMLElement;
     items: MenuItem[];
     /**
+     * If not provided, the general's menu is used
+     */
+    align?: AlignContent;
+    /**
      * Default is right
      */
     position?: SubmenuPosition;
@@ -128,6 +132,7 @@ export interface MenuItem {
     callback?: (evt: MouseEvent) => void;
 }
 type PositionType = `${Position}`;
+type AlignContent = 'left' | 'right' | 'center';
 /**
  * **_[interface]_**
  */
@@ -143,6 +148,11 @@ export interface Options {
      * Default is 'bottom'
      */
     position?: PositionType;
+    /**
+     * Items align items in the menu
+     * Default is `center`
+     */
+    alignContent?: AlignContent;
     /**
      * Margin between the menu and the toggler button.
      * Default is 10 if `arrow` is true, otherwise is 2

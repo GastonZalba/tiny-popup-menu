@@ -1,7 +1,7 @@
 /*!
- * tiny-popup-menu - v1.0.11
+ * tiny-popup-menu - v1.0.12
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Tue May 13 2025 19:06:55 GMT-0300 (Argentina Standard Time)
+ * Built: Fri May 16 2025 17:36:22 GMT-0300 (Argentina Standard Time)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -140,7 +140,8 @@
           y: 0
       },
       menuItems: [],
-      stopClick: true
+      stopClick: true,
+      alignContent: 'center'
   };
 
   function arrowLeft() {
@@ -153,6 +154,7 @@
 
   const ID = 'popup-menu';
   const CLASS_CONTAINER = ID + '--container';
+  const CLASS_ALIGN = ID + '--align';
   const CLASS_OPEN = ID + '--active';
   const CLASS_SHOW_ARROW = ID + '--show-arrow';
   const CLASS_SHOW_ARROW_TOP = ID + '--show-arrow-top';
@@ -311,7 +313,7 @@
               this._containerMenu.classList.add(CLASS_SHOW_ARROW);
           }
           this._containerMenu.innerHTML = '';
-          this._containerMenu.append(createElement("div", { className: CLASS_CONTAINER }, ...this._menuItemsList));
+          this._containerMenu.append(createElement("div", { className: `${CLASS_CONTAINER} ${CLASS_ALIGN}-${this._options.alignContent}` }, ...this._menuItemsList));
           document.body.append(this._containerMenu);
           const togglerPosition = this._toggler.getBoundingClientRect();
           const togglerHeight = this._toggler.offsetHeight;
@@ -411,7 +413,12 @@
        * @param autoClose
        */
       _processSubMenu(submenu, autoClose) {
-          return (createElement("div", { className: CLASS_SUBMENU + ' ' + (submenu.className || ''), id: submenu.id, style: submenu.style, "data-position": submenu.position || SubmenuPosition.Right },
+          return (createElement("div", { className: CLASS_SUBMENU +
+                  ' ' +
+                  (submenu.className || '') +
+                  CLASS_ALIGN +
+                  '-' +
+                  submenu.align, id: submenu.id, style: submenu.style, "data-position": submenu.position || SubmenuPosition.Right },
               createElement("span", null, submenu.content),
               createElement("div", { className: CLASS_SUBMENU_ARROW }),
               createElement("div", { className: CLASS_SUBMENU_CONTENT }, submenu.items.map((item) => this._processMenuItem(item, autoClose)))));

@@ -20,7 +20,7 @@ If you want only one menu open at a time, use a unique instance. But if you want
 <img src="screenshots/example.gif" alt="Example">
 
 ## Example
-See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.11/examples/basic.html).
+See an online example/playground [here](https://raw.githack.com/GastonZalba/tiny-popup-menu/v1.0.12/examples/basic.html).
 
 ## Usage
 ### Creating an instance
@@ -39,6 +39,12 @@ var tinyPopupMenu = new TinyPopupMenu({
      * Default is 'bottom'
      */
     position: TinyPopupMenu.Position.Bottom,
+
+    /**
+     * Items align items in the menu
+     * Default is `center`
+     */
+    alignContent: 'center';
 
     /**
      * Margin between the menu and the toggler button.
@@ -118,13 +124,13 @@ tinyPopupMenu.on('updateposition', () => console.log('Update position event'));
 Load `tiny-popup-menu.js`. Tiny Popup Menu is available as `TinyPopupMenu`.
 
 ```HTML
-<script src="https://unpkg.com/tiny-popup-menu@1.0.11"></script>
+<script src="https://unpkg.com/tiny-popup-menu@1.0.12"></script>
 ```
 
 #### CSS
 
 ```HTML
-<link rel="stylesheet" href="https://unpkg.com/tiny-popup-menu@1.0.11/dist/css/tiny-popup-menu.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/tiny-popup-menu@1.0.12/dist/css/tiny-popup-menu.min.css" />
 ```
 
 ### Parcel, Webpack, etc.

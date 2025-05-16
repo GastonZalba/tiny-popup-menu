@@ -23,3 +23,8 @@
 * Only apply style `cursor: pointer` if item has an existing callback function (created class `popup-menu--item-clickleable`)
 * Added item option `autoClose` to allow an individual control 
 * Added an input checkbox in the example (with `autoClose` disabled)
+
+
+## 1.0.12
+* Added general and submenu `alignContent` option
+* Improved some css classes
