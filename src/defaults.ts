@@ -12,5 +12,6 @@ export const defaultOptions: Options = {
         y: 0
     },
     menuItems: [],
-    stopClick: true
+    stopClick: true,
+    alignContent: 'center'
 };

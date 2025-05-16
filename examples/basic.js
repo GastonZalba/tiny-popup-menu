@@ -21,6 +21,8 @@
     // use here options shared across all elements
     var tinyPopupMenu = new TinyPopupMenu({
         autoClose: true,
+        alignContent: 'center',
+        arrow: true,
         menuItems: [
             {
                 content: 'Click to display alert 😎',
@@ -40,6 +42,7 @@
             '-',
             {
                 content: 'Submenu',
+                align: 'left',
                 items: [
                     {
                         content: 'Submenu item',

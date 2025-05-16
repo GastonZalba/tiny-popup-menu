@@ -11,6 +11,7 @@ import arrowRight from './assets/svg/arrow_right.svg';
 
 const ID = 'popup-menu';
 const CLASS_CONTAINER = ID + '--container';
+const CLASS_ALIGN = ID + '--align';
 const CLASS_OPEN = ID + '--active';
 const CLASS_SHOW_ARROW = ID + '--show-arrow';
 const CLASS_SHOW_ARROW_TOP = ID + '--show-arrow-top';
@@ -205,7 +206,11 @@ export default class TinyPopupMenu extends TinyEmitter {
 
         this._containerMenu.innerHTML = '';
         this._containerMenu.append(
-            <div className={CLASS_CONTAINER}>{...this._menuItemsList}</div>
+            <div
+                className={`${CLASS_CONTAINER} ${CLASS_ALIGN}-${this._options.alignContent}`}
+            >
+                {...this._menuItemsList}
+            </div>
         );
 
         document.body.append(this._containerMenu);
@@ -357,7 +362,14 @@ export default class TinyPopupMenu extends TinyEmitter {
     ): HTMLElement {
         return (
             <div
-                className={CLASS_SUBMENU + ' ' + (submenu.className || '')}
+                className={
+                    CLASS_SUBMENU +
+                    ' ' +
+                    (submenu.className || '') +
+                    CLASS_ALIGN +
+                    '-' +
+                    submenu.align
+                }
                 id={submenu.id}
                 style={submenu.style}
                 data-position={submenu.position || SubmenuPosition.Right}
@@ -547,6 +559,12 @@ export interface OpenOptions extends Options {
 export interface Submenu {
     content: string | HTMLElement;
     items: MenuItem[];
+
+    /**
+     * If not provided, the general's menu is used
+     */
+    align?: AlignContent;
+
     /**
      * Default is right
      */
@@ -576,6 +594,8 @@ export interface MenuItem {
 
 type PositionType = `${Position}`;
 
+type AlignContent = 'left' | 'right' | 'center';
+
 /**
  * **_[interface]_**
  */
@@ -592,6 +612,12 @@ export interface Options {
      * Default is 'bottom'
      */
     position?: PositionType;
+
+    /**
+     * Items align items in the menu
+     * Default is `center`
+     */
+    alignContent?: AlignContent;
 
     /**
      * Margin between the menu and the toggler button.
