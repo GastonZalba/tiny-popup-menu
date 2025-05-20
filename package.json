@@ -1,6 +1,6 @@
 {
   "name": "tiny-popup-menu",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Tiny Popup Menu",
   "main": "dist/tiny-popup-menu.js",
   "module": "lib/tiny-popup-menu.js",
