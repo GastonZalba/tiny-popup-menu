@@ -360,16 +360,15 @@ export default class TinyPopupMenu extends TinyEmitter {
         submenu: Submenu,
         autoClose: boolean
     ): HTMLElement {
+        let className = CLASS_SUBMENU;
+        className += submenu.className ? ` ${submenu.className}` : '';
+        className += submenu.alignContent
+            ? ` ${CLASS_ALIGN}-${submenu.alignContent}`
+            : '';
+
         return (
             <div
-                className={
-                    CLASS_SUBMENU +
-                    ' ' +
-                    (submenu.className || '') +
-                    CLASS_ALIGN +
-                    '-' +
-                    submenu.align
-                }
+                className={className}
                 id={submenu.id}
                 style={submenu.style}
                 data-position={submenu.position || SubmenuPosition.Right}
@@ -563,7 +562,7 @@ export interface Submenu {
     /**
      * If not provided, the general's menu is used
      */
-    align?: AlignContent;
+    alignContent?: AlignContent;
 
     /**
      * Default is right

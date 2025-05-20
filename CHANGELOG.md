@@ -24,7 +24,11 @@
 * Added item option `autoClose` to allow an individual control 
 * Added an input checkbox in the example (with `autoClose` disabled)
 
-
 ## 1.0.12
 * Added general and submenu `alignContent` option
 * Improved some css classes
+
+## 1.0.13
+* Changed dev port 3001 to 3007
+* Fix bug on submenu `alignContent` and `className` attributes
+* Updated deps

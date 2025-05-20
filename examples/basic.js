@@ -11,7 +11,7 @@
 
     var checkboxInput = document.createElement('input');
     checkboxInput.type = 'checkbox';
-    checkboxInput.checkd = true;
+    checkboxInput.checked = true;
 
     var checkboxLabel = document.createElement('label');    
     checkboxLabel.innerText = 'Test checkbox ';
@@ -42,7 +42,8 @@
             '-',
             {
                 content: 'Submenu',
-                align: 'left',
+                alignContent: 'left',
+                className: 'custom-submenu',
                 items: [
                     {
                         content: 'Submenu item',
