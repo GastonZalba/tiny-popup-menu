@@ -1,7 +1,7 @@
 /*!
  * tiny-popup-menu - v1.0.12
  * https://github.com/GastonZalba/tiny-popup-menu#readme
- * Built: Fri May 16 2025 17:36:22 GMT-0300 (Argentina Standard Time)
+ * Built: Tue May 20 2025 09:51:33 GMT-0300 (hora estándar de Argentina)
 */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -134,7 +134,7 @@
       className: '',
       autoClose: true,
       arrow: true,
-      margin: undefined,
+      margin: undefined, // autocalculate later
       offset: {
           x: 0,
           y: 0
@@ -413,12 +413,12 @@
        * @param autoClose
        */
       _processSubMenu(submenu, autoClose) {
-          return (createElement("div", { className: CLASS_SUBMENU +
-                  ' ' +
-                  (submenu.className || '') +
-                  CLASS_ALIGN +
-                  '-' +
-                  submenu.align, id: submenu.id, style: submenu.style, "data-position": submenu.position || SubmenuPosition.Right },
+          let className = CLASS_SUBMENU;
+          className += submenu.className ? ` ${submenu.className}` : '';
+          className += submenu.alignContent
+              ? ` ${CLASS_ALIGN}-${submenu.alignContent}`
+              : '';
+          return (createElement("div", { className: className, id: submenu.id, style: submenu.style, "data-position": submenu.position || SubmenuPosition.Right },
               createElement("span", null, submenu.content),
               createElement("div", { className: CLASS_SUBMENU_ARROW }),
               createElement("div", { className: CLASS_SUBMENU_CONTENT }, submenu.items.map((item) => this._processMenuItem(item, autoClose)))));

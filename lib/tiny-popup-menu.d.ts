@@ -106,7 +106,7 @@ export interface Submenu {
     /**
      * If not provided, the general's menu is used
      */
-    align?: AlignContent;
+    alignContent?: AlignContent;
     /**
      * Default is right
      */

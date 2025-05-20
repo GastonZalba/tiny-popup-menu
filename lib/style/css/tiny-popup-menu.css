@@ -51,7 +51,7 @@
 .popup-menu .popup-menu--container .popup-menu--item:focus,
 .popup-menu .popup-menu--container .popup-menu--item:active,
 .popup-menu .popup-menu--container .popup-menu--item:hover {
-  background: #ebebeb;
+  background: rgb(234.6, 234.6, 234.6);
 }
 .popup-menu .popup-menu--container .popup-menu--submenu {
   display: -webkit-flex;
@@ -110,7 +110,7 @@
   height: 1px;
   display: block;
   margin: 6px 0;
-  background-color: #d4d4d4;
+  background-color: rgb(212.3, 212.3, 212.3);
 }
 .popup-menu.popup-menu--show-arrow:after {
   content: "";
