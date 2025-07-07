@@ -32,3 +32,6 @@
 * Changed dev port 3001 to 3007
 * Fix bug on submenu `alignContent` and `className` attributes
 * Updated deps
+
+## 1.0.14
+* Some minor css improvements to allow show HTML content as an popup info only

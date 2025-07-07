@@ -118,6 +118,16 @@
         createTestBtn('Click (no arrow)', (event) =>
             tinyPopupMenu.open({ arrow: false, event })
         ),
+        createTestBtn('Click (HTML not clicklable)', (event) =>
+            tinyPopupMenu.open({ 
+                event,
+                menuItems: [
+                    {
+                        className: 'custom-message',
+                        content: `<div><h5>Example title</h5><br/><div>This is a raw text example. Use this to show no interactable info</div></div>`,
+                    }
+            ] })
+        ),
         btnInit,
         createTestBtn(
             'Use right click',
@@ -130,12 +140,13 @@
         ),
         createTestBtn('Click (no arrow)', (event) =>
             tinyPopupMenu.open({ arrow: false, event })
-        )
+        )     
     );
 
     var buttonsBottom = document.querySelector(
         '#testButtonsBottom .containerButtons'
     );
+    
     buttonsBottom.append(
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
         createTestBtn('Click', (event) => tinyPopupMenu.open({ event })),
