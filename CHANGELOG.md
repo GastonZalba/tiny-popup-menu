@@ -35,3 +35,7 @@
 
 ## 1.0.14
 * Some minor css improvements to allow show HTML content as an popup info only
+
+## 1.0.15
+* Fix missing types in build
+* Removed incremental from `tsconfig`

@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "incremental": true
+    "incremental": false
   },
   "include": [
     "./src"
